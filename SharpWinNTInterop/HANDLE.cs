@@ -78,7 +78,11 @@ public unsafe readonly partial struct HANDLE : IComparable, IComparable<HANDLE>,
         else return obj is null ? 1 : throw new ArgumentException(WErrorMessage.ObjNotHANDLE);
     }
 
-    public int CompareTo(HANDLE other) => ((nuint)Value).CompareTo((nuint)other.Value);
+    public int CompareTo(HANDLE other)
+    {
+        if (sizeof(nuint) == sizeof(uint)) return ((uint)Value).CompareTo((uint)other.Value);
+        else return ((ulong)Value).CompareTo((ulong)other.Value);
+    }
 
     public override bool Equals(object? obj) => obj is HANDLE other && Equals(other);
 
